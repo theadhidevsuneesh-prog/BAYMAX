@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+  color: #17141c;
+  font-family: 'Nunito Variable', Nunito, 'Segoe UI', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* "drag" areas move the frameless window; "no-drag" keeps buttons clickable inside them; "selectable" allows copying text. */
+.drag { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+.selectable { user-select: text; }
+
+/* soft lavender light behind the whole HUD - no grids, no scanlines */
+/* Soft lavender glow behind the HUD (no grids or scan-lines). */
+.hud-surface {
+  background:
+    radial-gradient(900px 520px at 18% -10%, rgba(140, 123, 198, 0.16), transparent 60%),
+    radial-gradient(700px 480px at 105% 110%, rgba(226, 54, 47, 0.07), transparent 60%),
+    #f7f4fa;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(23, 20, 28, 0.16); border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
+input::placeholder { color: rgba(23, 20, 28, 0.38); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #e2362f; outline-offset: 2px; }

@@ -1,0 +1,68 @@
+{
+  "name": "baymax",
+  "version": "1.0.0",
+  "description": "BAYMAX - a free, local AI personal assistant for Windows 11 (Qwen via Ollama)",
+  "main": "electron/main.js",
+  "author": "Adhidev Suneesh (https://github.com/theadhidevsuneesh-prog)",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup.ps1",
+    "dev": "concurrently -k -n web,app \"npm --prefix frontend run dev\" \"wait-on http-get://localhost:5173 && cross-env BAYMAX_DEV=1 electron .\"",
+    "start": "npm --prefix frontend run build && electron .",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-backend.ps1",
+    "dist": "npm run build:frontend && npm run build:backend && electron-builder --win nsis",
+    "dist:dir": "npm run build:frontend && npm run build:backend && electron-builder --win --dir"
+  },
+  "build": {
+    "appId": "com.baymax.assistant",
+    "productName": "BAYMAX",
+    "copyright": "BAYMAX - free & local",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/dist/baymax-backend",
+        "to": "backend"
+      },
+      {
+        "from": "build/icon.png",
+        "to": "icon.png"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "BAYMAX"
+    }
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.7",
+    "cross-env": "^10.1.0",
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0",
+    "wait-on": "^9.5.1"
+  }
+}
